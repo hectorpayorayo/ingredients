@@ -1,22 +1,58 @@
 service: ingredients
 custom:
+  pythonRequirements:
+    dockerizePip: non-linux
   dbUsername: "meez_user"
   dbUserPassword: "meez20220517pass"
   dbInstanceIdentifier: "meez-db-instance"
   dbName: "meez__db"
+
 provider:
   name: aws
   runtime: python3.8
+  tracing:
+    lambda: true
+  environment:
+    DB_NAME: ${self:custom.dbName}
+    DB_USERNAME: ${self:custom.dbUsername}
+    DB_USER_PASSWORD: ${self:custom.dbUserPassword}
+    DB_INSTANCE_IDENTIFIER: ${self:custom.dbInstanceIdentifier}
 
+  iamRoleStatements:
+    - Effect: "Allow"
+      Action:
+        - "rds:*"
+      Resource:
+        - "*"
 functions:
   hello:
     handler: handler.hello
     events:
       - httpApi:
-          path: /
+          path: "/search/{owner_id}"
           method: get
 resources:
  Resources:
+  CloudWatchRole:
+    Type: "AWS::IAM::Role"
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: apigateway.amazonaws.com
+            Action: 'sts:AssumeRole'
+      Path: /
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AmazonAPIGatewayPushToCloudWatchLogs
+
+  ApiGatewayAccount:
+    Type: "AWS::ApiGateway::Account"
+    Properties:
+      CloudWatchRoleArn:
+        Fn::GetAtt: ["CloudWatchRole", "Arn"]
+
   pgSecurityGroup:
     Type: AWS::EC2::SecurityGroup
     Properties:
@@ -46,3 +82,5 @@ resources:
           Key: "Name"
           Value: ${self:custom.dbInstanceIdentifier}
     DeletionPolicy: "Snapshot"
+plugins:
+  - serverless-python-requirements
