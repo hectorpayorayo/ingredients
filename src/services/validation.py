@@ -1,22 +1,15 @@
-import json
-from importlib.resources import read_text
-import jsonschema
-from src.data import schemas
+from src.data import enums
+from src.data.exceptions import BadRequestException
 
 
 class ValidationService:
-
     def __init__(self, event):
         self.event = event
 
-    def validate_json_schema(self, schema_name: str):
-        """
+    def validate_search(self):
+        query_params = self.event.get("queryStringParameters", {})
+        if "name" in query_params:
+            raise BadRequestException(enums.ErrorMessage.NAME_REQUIRED.value)
+        if "owner_id" in query_params:
+            raise BadRequestException(enums.ErrorMessage.OWNER_REQUIRED.value)
 
-        :param schema_name:
-        :param payload:
-        :return:
-        """
-        schema_body = read_text(
-            package=schemas.__package__, resource=f"{schema_name}.json"
-        )
-        jsonschema.validate(self.event, json.loads(schema_body))

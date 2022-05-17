@@ -1,8 +1,8 @@
 import json
 
 from aws_lambda_powertools import Logger
-from fastjsonschema import JsonSchemaException
 
+from src.data.exceptions import BadRequestException
 from src.services.config import ConfigService
 
 conf_service = ConfigService()
@@ -25,7 +25,7 @@ class ResponseService:
             }
             try:
                 status_code, response = func(*args, **kwargs)
-            except JsonSchemaException as ex:
+            except BadRequestException as ex:
                 logger.info({"message": "BadRequest ERROR", "exception": str(ex)})
                 status_code = 400
                 response = {'message': str(ex)}

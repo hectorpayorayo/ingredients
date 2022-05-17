@@ -2,8 +2,6 @@ from enum import unique, Enum
 
 
 @unique
-class SchemaNames(Enum):
-    """
-    Schema names
-    """
-    SEARCH = "search_schema"
+class ErrorMessage(Enum):
+    OWNER_REQUIRED = "owner_id field  is required"
+    NAME_REQUIRED = "name field is required"

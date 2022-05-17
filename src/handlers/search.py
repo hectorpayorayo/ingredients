@@ -20,11 +20,9 @@ def handler(event, _):
 
     validate_service = validation.ValidationService(event)
     validate_service.validate_json_schema(enums.SchemaNames.SEARCH.value)
-
     query_params = event.get("queryStringParameters", {})
     name = query_params.get("name", "")
-    path_params = event.get("pathParameters", {})
-    owner_id = path_params.get("owner_id")
+    owner_id = query_params.get("owner_id")
 
     response = describe_db_instances()
     logger.info({"message": "RDS", "info": response})
