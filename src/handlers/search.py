@@ -11,7 +11,7 @@ logger = Logger(service=conf_service.LOGGER_NAME)
 
 
 @ResponseService.pretty_response
-def hello(event, _):
+def handler(event, _):
     logger.info({"message": "Event information", "event_info": event})
 
     body = {

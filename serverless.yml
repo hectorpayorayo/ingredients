@@ -27,7 +27,7 @@ provider:
         - "*"
 functions:
   hello:
-    handler: handler.hello
+    handler: src.handlers.search.handler
     events:
       - httpApi:
           path: "/search/{owner_id}"
