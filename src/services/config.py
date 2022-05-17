@@ -1,5 +1,4 @@
 import os
-
 import boto3
 
 
@@ -11,5 +10,4 @@ class ConfigService:
         self.DB_PORT: str = 5432
         self.DB_INSTANCE_IDENTIFIER = os.getenv("DB_INSTANCE_IDENTIFIER")
         self.rds_client = boto3.client('rds')
-
-
+        self.LOGGER_NAME: str = os.getenv("LOGGER_SERVICE_NAME")
