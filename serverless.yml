@@ -6,7 +6,7 @@ custom:
   dbUserPassword: "meez20220517pass"
   dbInstanceIdentifier: "meez-db-instance"
   dbName: "meez__db"
-    LOGGER_SERVICE_NAME: ${self:service}-logger
+  logger_service_name: ${self:service}-logger
 
 provider:
   name: aws
@@ -18,7 +18,7 @@ provider:
     DB_USERNAME: ${self:custom.dbUsername}
     DB_USER_PASSWORD: ${self:custom.dbUserPassword}
     DB_INSTANCE_IDENTIFIER: ${self:custom.dbInstanceIdentifier}
-    LOGGER_SERVICE_NAME: ${self:custom.LOGGER_SERVICE_NAME}
+    LOGGER_SERVICE_NAME: ${self:custom.logger_service_name}
   iamRoleStatements:
     - Effect: "Allow"
       Action:
@@ -26,7 +26,7 @@ provider:
       Resource:
         - "*"
 functions:
-  hello:
+  search:
     handler: src.handlers.search.handler
     events:
       - httpApi:
