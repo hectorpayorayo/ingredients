@@ -22,5 +22,5 @@ class DB:
         """
         with self.eng.connect() as con:
             result_set = con.execute(text(
-                f"SELECT DISTINCT ON (name) * FROM ingredients WHERE (owner_id={owner_id} or owner_id is null) and name like '%{name}%' ORDER BY name, owner_id"))
+                f"SELECT DISTINCT ON (name) * FROM public.ingredients WHERE (owner_id={owner_id} or owner_id is null) and name like '%{name}%' ORDER BY name, owner_id"))
             return result_set

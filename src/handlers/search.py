@@ -19,7 +19,7 @@ def handler(event, _):
     logger.info({"message": "Event information", "event_info": event})
 
     validate_service = validation.ValidationService(event)
-    validate_service.validate_json_schema(enums.SchemaNames.SEARCH.value)
+    validate_service.validate_search()
     query_params = event.get("queryStringParameters", {})
     name = query_params.get("name", "")
     owner_id = query_params.get("owner_id")

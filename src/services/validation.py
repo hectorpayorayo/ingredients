@@ -8,8 +8,8 @@ class ValidationService:
 
     def validate_search(self):
         query_params = self.event.get("queryStringParameters", {})
-        if "name" in query_params:
+        if "name" not in query_params:
             raise BadRequestException(enums.ErrorMessage.NAME_REQUIRED.value)
-        if "owner_id" in query_params:
+        if "owner_id" not in query_params:
             raise BadRequestException(enums.ErrorMessage.OWNER_REQUIRED.value)
 

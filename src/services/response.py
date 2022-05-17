@@ -29,6 +29,10 @@ class ResponseService:
                 logger.info({"message": "BadRequest ERROR", "exception": str(ex)})
                 status_code = 400
                 response = {'message': str(ex)}
+            except Exception as ex:
+                logger.info({"message": "Exception ERROR", "exception": str(ex)})
+                status_code = 500
+                response = {'message': str(ex)}
             response = json.dumps(response)
             return {"statusCode": status_code,  "headers": headers, "body": response}
         return wrap
