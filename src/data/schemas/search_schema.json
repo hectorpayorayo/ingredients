@@ -7,10 +7,7 @@
       "type": ["object","null"],
       "properties": {
         "owner_id": {"type": "string"}
-      },
-      "required": [
-        "owner_id"
-      ]
+      }
     },
     "queryStringParameters": {
       "type": ["object","null"],
