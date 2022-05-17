@@ -1,6 +1,9 @@
 service: ingredients
-frameworkVersion: '3'
-
+custom:
+  dbUsername: "meez_user"
+  dbUserPassword: "meez20220517pass"
+  dbInstanceIdentifier: "meez-db-instance"
+  dbName: "meez__db"
 provider:
   name: aws
   runtime: python3.8
@@ -12,3 +15,34 @@ functions:
       - httpApi:
           path: /
           method: get
+resources:
+ Resources:
+  pgSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Acess to Postgre
+      SecurityGroupIngress:
+      - IpProtocol: tcp
+        FromPort: '5432'
+        ToPort: '5432'
+        CidrIp: 0.0.0.0/0
+
+  PostgressDB:
+    Type: "AWS::RDS::DBInstance"
+    Properties:
+      AllocatedStorage: "10"
+      DBName: ${self:custom.dbName}
+      DBInstanceIdentifier: ${self:custom.dbInstanceIdentifier}
+      DBInstanceClass: "db.t3.micro"
+      Engine: "postgres"
+      MasterUsername: ${self:custom.dbUsername}
+      MasterUserPassword: ${self:custom.dbUserPassword}
+      VPCSecurityGroups:
+      - Fn::GetAtt:
+        - pgSecurityGroup
+        - GroupId
+      Tags:
+        -
+          Key: "Name"
+          Value: ${self:custom.dbInstanceIdentifier}
+    DeletionPolicy: "Snapshot"
