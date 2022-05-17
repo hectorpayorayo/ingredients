@@ -6,7 +6,7 @@ from fastjsonschema import JsonSchemaException
 from src.services.config import ConfigService
 
 conf_service = ConfigService()
-logger = Logger(service=conf_service.LOGGER_NAME)
+logger = Logger(service=conf_service.LOGGER_SERVICE_NAME)
 
 
 class ResponseService:
