@@ -12,4 +12,6 @@ class ValidationService:
             raise BadRequestException(enums.ErrorMessage.NAME_REQUIRED.value)
         if "owner_id" not in query_params:
             raise BadRequestException(enums.ErrorMessage.OWNER_REQUIRED.value)
+        if not str(query_params["owner_id"]).isnumeric():
+            raise BadRequestException(enums.ErrorMessage.OWNER_NUMERIC.value)
 

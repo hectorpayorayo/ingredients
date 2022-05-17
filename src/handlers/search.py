@@ -3,7 +3,6 @@ from http import HTTPStatus
 
 from aws_lambda_powertools import Logger
 
-from src.data import enums
 from src.services import validation
 from src.services.config import ConfigService
 from src.services.db import DB
@@ -25,14 +24,12 @@ def handler(event, _):
     owner_id = query_params.get("owner_id")
 
     response = describe_db_instances()
-    logger.info({"message": "RDS", "info": response})
     endpoint = response["DBInstances"][0].get("Endpoint", {})
 
     db = DB(db_name=conf.DB_NAME, host=endpoint.get("Address"), port=endpoint.get("Port"),
             username=conf.DB_USERNAME, password=conf.DB_USER_PASSWORD)
 
     items = db.search_ingredients_by_name(name=name, owner_id=owner_id)
-    logger.info({"message": "ITEMS", "info": items})
     response = []
     for item in items:
         response.append({
