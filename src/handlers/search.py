@@ -19,9 +19,8 @@ def handler(event, _):
 
     validate_service = validation.ValidationService(event)
     validate_service.validate_search()
-    query_params = event.get("queryStringParameters", {})
-    name = query_params.get("name", "")
-    owner_id = query_params.get("owner_id")
+    name = event.get("queryStringParameters", {}).get("name", "")
+    owner_id = event.get("pathParameters").get("owner_id")
 
     response = describe_db_instances()
     endpoint = response["DBInstances"][0].get("Endpoint", {})

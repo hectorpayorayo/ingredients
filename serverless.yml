@@ -30,8 +30,9 @@ functions:
     handler: src.handlers.search.handler
     events:
       - httpApi:
-          path: "/search"
+          path: "/search/{owner_id}"
           method: get
+
 resources:
  Resources:
   CloudWatchRole:

@@ -10,8 +10,9 @@ class ValidationService:
         query_params = self.event.get("queryStringParameters", {})
         if "name" not in query_params:
             raise BadRequestException(enums.ErrorMessage.NAME_REQUIRED.value)
-        if "owner_id" not in query_params:
+        path_params = self.event.get("pathParameters", {})
+        if "owner_id" not in path_params:
             raise BadRequestException(enums.ErrorMessage.OWNER_REQUIRED.value)
-        if not str(query_params["owner_id"]).isnumeric():
+        if not str(path_params["owner_id"]).isnumeric():
             raise BadRequestException(enums.ErrorMessage.OWNER_NUMERIC.value)
 
